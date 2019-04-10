@@ -50,7 +50,10 @@ AND     (JSON_EXTRACT_SCALAR(c,'$.active_special_event_1')= 'accumulation' OR
          event = 'accumulation_event_action_complete')
 
 GROUP BY  1
-
+--Destination table: hallowed-forge-577:TMP.accumulation_bug_rev
+                                                                                                                                      
+                                                                                                                                      
+                                                                                                                                      
 --sum:
 SELECT  count(distinct user_id) users,
         count(distinct case when raid_prog<raid then user_id end)       raid_bug,
