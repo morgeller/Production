@@ -1,5 +1,3 @@
-Tournament Revoked Reward
-
 --usre check: 
 
     SELECT  event,
@@ -29,7 +27,7 @@ Tournament Revoked Reward
     ORDER BY time
 
 
---user_list:
+--usre check2: 
 
     SELECT  A.user_id,        
             max(case when event = 'tourn_final_leaderboard_popup_closed' then spins end) spins_inv_before,
@@ -113,3 +111,38 @@ FROM    TMP.tour_max_date_rev_2
 WHERE   cast(spins_reward as int64) > 0
 AND     spins_before IS NOT NULL
 GROUP BY 1
+                       
+                       
+                       
+                       
+                       
+                       
+                       
+                       
+                       
+    SELECT  event,
+            user_id,
+            time,
+            server_time,
+            all_time_spins,
+            profile,
+            village,
+            spins,
+            coins,
+            source,
+            JSON_EXTRACT_SCALAR(c,'$.bet')                    bet,
+            JSON_EXTRACT_SCALAR(c,'$.reward_id')              reward_id,
+            JSON_EXTRACT_SCALAR(c,'$.rewards.reward_0_type')  reward_0_type,
+            JSON_EXTRACT_SCALAR(c,'$.rewards.reward_0_amount')reward_0_amount,
+            JSON_EXTRACT_SCALAR(c,'$.rewards.reward_1_type')  reward_1_type,
+            JSON_EXTRACT_SCALAR(c,'$.rewards.reward_1_amount')reward_1_amount,
+            JSON_EXTRACT_SCALAR(c,'$.rewards.reward_2_type')  reward_2_type,
+            JSON_EXTRACT_SCALAR(c,'$.rewards.reward_2_amount')reward_2_amount
+            
+    FROM    `streamingdata.CM_STR_EVENT.EVENT_STREAM_PROD_LEGACY`
+    WHERE   server_time >= '2019-04-07' AND server_time < '2019-04-08'
+    AND     (user_id = 'rof4__cjr81sd5r007qw5l84kpsnxzu' /*OR attackedPerson = 'rof5__cjsf7cgc8045x8zlf2jzt41ey'*/)
+    AND     event not in ('gifts_coins_collected','gifts_spins_collected','fb_found_friends','asset_bundle_download_finished','asset_bundle_download_started','gifts_coins_sent','gifts_spins_sent',
+                          'gifts_popup_closed','gifts_popup_opened','retro_pay_fix','build_pay3','fb_friend_joined','fb_friend_joined_no_reward')
+    ORDER BY time
+                       
