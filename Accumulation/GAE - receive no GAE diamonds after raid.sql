@@ -28,14 +28,25 @@ SELECT      TIMESTAMP_MICROS(t)           server_time,
     
     
     --user list:
-    SELECT  user_id,
-        
+SELECT  user_id,
+        profile,
+        village,
+        max(app_version) app_version,
         count(distinct case when event = 'raid_end' then c end)                                                                                                     raid,
         count(distinct case when event = 'accumulation_event_action_complete' and JSON_EXTRACT_SCALAR(c,'$.action_name') in ('raid','perfect_raid') then c end)     raid_prog,
         count(distinct case when event='chest_found' AND source='raid' then c end)     raid_chest,
         
         count(distinct case when event = 'attack_end' then c end)                                                                                                   attack,
         count(distinct case when event = 'accumulation_event_action_complete' and JSON_EXTRACT_SCALAR(c,'$.action_name') in ('attack','attack_block') then c end)   attack_prog,
+        
+        count(distinct case when event = 'attack_end' and atk_result = 'ok' then c end)                                                                             attack_hit,
+        count(distinct case when event = 'accumulation_event_action_complete' and JSON_EXTRACT_SCALAR(c,'$.action_name') in ('attack') then c end)                  attack_hit_prog,
+        
+        count(distinct case when event = 'attack_end' and atk_result <> 'ok' then c end)                                                                            attack_block,
+        count(distinct case when event = 'accumulation_event_action_complete' and JSON_EXTRACT_SCALAR(c,'$.action_name') in ('attack_block') then c end)            attack_block_prog,
+        
+        count(distinct case when event = 'attack_end' and atk_result = 'sync' then c end)                                                                           attack_sync,
+        count(distinct case when event = 'attack_end' and atk_result = 'no_item' then c end)                                                                        attack_no_item,
         
         count(distinct case when event='spin' AND spin_result='accumulation' then c end)                                                                            spin,
         count(distinct case when event = 'accumulation_event_action_complete' and JSON_EXTRACT_SCALAR(c,'$.action_name') in ('match_3') then c end)                 spin_prog
@@ -49,7 +60,8 @@ AND     (JSON_EXTRACT_SCALAR(c,'$.active_special_event_1')= 'accumulation' OR
          JSON_EXTRACT_SCALAR(c,'$.active_special_event_3')= 'accumulation' OR
          event = 'accumulation_event_action_complete')
 
-GROUP BY  1
+GROUP BY  1,2,3
+                                                                                                                                      
 --Destination table: hallowed-forge-577:TMP.accumulation_bug_rev
                                                                                                                                       
                                                                                                                                       
