@@ -58,3 +58,13 @@ SELECT  count(distinct user_id) users,
         count(distinct case when spin_prog<spin then user_id end)       spin_bug,
         count(distinct case when raid_prog<raid or attack_prog<attack or spin_prog<spin then user_id end)       any_bug
 FROM    TMP.accumulation_bug_rev
+                                                                                                                                      
+                                                                                                                                      
+SELECT  case when raid_chest>0 then 1 else 0 end chest_ind,
+        count(distinct user_id) users,
+        count(distinct case when raid_prog<raid then user_id end)       raid_bug,
+        count(distinct case when attack_prog<attack then user_id end)   attack_bug,
+        count(distinct case when spin_prog<spin then user_id end)       spin_bug,
+        count(distinct case when raid_prog<raid or attack_prog<attack or spin_prog<spin then user_id end)       any_bug
+FROM    TMP.accumulation_bug_rev
+GROUP BY 1
