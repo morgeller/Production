@@ -20,7 +20,7 @@ SELECT  *,
         CASE  WHEN UPPER(Category) LIKE '%XP%' AND Purchase_On_Last_Event=1                                                     THEN pet_xp
               WHEN Used_XP IS NULL                                                                                              THEN NULL
               WHEN Used_XP>=pet_xp+pet_xp_inv                                                                                   THEN NULL
-              WHEN Used_XP<=pet_xp                                                                                              THEN pet_xp
+              WHEN Used_XP<=pet_xp_inv                                                                                          THEN pet_xp
         ELSE pet_xp+pet_xp_inv-Used_XP END                                                                                                      XP_Balance,
         
         CASE  WHEN Category IN ('Spins','Coins','Wheel','Pet_Food','Pet_xp','Spins&Chest','Coins&Chest')    THEN COALESCE(Spins_Wheel_PackEnd,Coins_PackEnd,Food_PackEnd,XP_PackEnd)
